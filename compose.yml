@@ -1,0 +1,20 @@
+services:
+
+
+  john-redis:
+    container_name: john-redis
+    image: redis:7.0
+    ports:
+      - 6379:6379
+
+  john-mariadb:
+    container_name: john-mariadb
+    image: mariadb:11-ubi
+    ports:
+      - 3306:3306
+    environment:
+      - MARIADB_DATABASE=pharmacy-find-directions
+      - MARIADB_ROOT_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
+    volumes:
+      - ./database/config/mariadb.config:/etc/mysql/mariadb.config
+
