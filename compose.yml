@@ -16,5 +16,8 @@ services:
       - MARIADB_DATABASE=pharmacy-find-directions
       - MARIADB_ROOT_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
     volumes:
-      - ./database/config/mariadb.config:/etc/mysql/mariadb.config
+      - ./database/config:/etc/mysql/conf.d
+      - ./database/init:/docker-entrypoint-initdb.d
+
+
 
