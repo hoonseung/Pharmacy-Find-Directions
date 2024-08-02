@@ -1,15 +1,17 @@
 package com.backend.finddirections.entity.pharmacy
 
-import com.backend.finddirections.AbstractIntegrationContainerBaseTest
+
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.test.context.DynamicPropertySource
 
 class PharmacyRepositoryTest extends AbstractIntegrationContainerBaseTest {
 
     @Autowired
     private PharmacyRepository pharmacyRepository;
 
-    @DynamicPropertySource
+    def setup() {
+        pharmacyRepository.deleteAll()
+    }
+
 
     def "PharmacyRepository save"() {
         given:
@@ -29,6 +31,22 @@ class PharmacyRepositoryTest extends AbstractIntegrationContainerBaseTest {
         result.getPharmacyName() == name
         result.getLatitude() == latitude
         result.getLongitude() == longitude
+    }
 
+
+    def "PharmacyRepository saveAll"() {
+        given:
+        String name = "은혜 약국"
+        String address = "서울 특별시 성북구 종암동"
+        Double latitude = 36.11
+        Double longitude = 128.11
+
+        when:
+        pharmacyRepository.saveAll(List.of(Pharmacy.create(name, address, latitude, longitude)))
+        def findResults = pharmacyRepository.findAll()
+
+
+        then:
+        findResults.size() == 1
     }
 }
