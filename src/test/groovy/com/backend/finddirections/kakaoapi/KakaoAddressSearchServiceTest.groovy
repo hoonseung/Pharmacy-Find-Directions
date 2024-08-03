@@ -1,4 +1,4 @@
-package com.backend.finddirections.pharmacy.service
+package com.backend.finddirections.kakaoapi
 
 
 import com.backend.finddirections.api.exception.KakaoClientApiException

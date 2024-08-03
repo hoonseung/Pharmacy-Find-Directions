@@ -11,6 +11,6 @@ public class RestClientConfig {
     //https://dapi.kakao.com/v2/local/search/address.json?query=전북 삼성동 100
     @Bean
     public RestClient restClient() {
-        return RestClient.create("https://dapi.kakao.com/v2/local/search/address.json");
+        return RestClient.create();
     }
 }
