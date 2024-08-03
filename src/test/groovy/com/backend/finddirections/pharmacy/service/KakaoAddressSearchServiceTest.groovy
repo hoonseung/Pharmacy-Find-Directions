@@ -1,9 +1,9 @@
-package com.backend.finddirections.entity.pharmacy.service
+package com.backend.finddirections.pharmacy.service
 
 
 import com.backend.finddirections.api.exception.KakaoClientApiException
 import com.backend.finddirections.api.service.KakaoAddressSearchService
-import com.backend.finddirections.entity.pharmacy.AbstractIntegrationContainerBaseTest
+import com.backend.finddirections.pharmacy.AbstractIntegrationContainerBaseTest
 import org.springframework.beans.factory.annotation.Autowired
 
 class KakaoAddressSearchServiceTest extends AbstractIntegrationContainerBaseTest {

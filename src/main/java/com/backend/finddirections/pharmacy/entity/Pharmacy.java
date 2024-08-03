@@ -1,4 +1,4 @@
-package com.backend.finddirections.entity.pharmacy;
+package com.backend.finddirections.pharmacy.entity;
 
 
 import com.backend.finddirections.BaseTemporalEntity;
@@ -12,15 +12,14 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Pharmacy extends BaseTemporalEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "pharmacy_id")
     private Long id;
 
-    @Column(nullable = false)
+    @Column
     private String pharmacyName;
 
-    @Column(nullable = false)
+    @Column
     private String pharmacyAddress;
 
     @Column(nullable = false)

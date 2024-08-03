@@ -1,4 +1,4 @@
-package com.backend.finddirections.entity.pharmacy
+package com.backend.finddirections.pharmacy
 
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ActiveProfiles

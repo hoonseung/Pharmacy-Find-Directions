@@ -1,6 +1,7 @@
-package com.backend.finddirections.entity.pharmacy
+package com.backend.finddirections.pharmacy
 
-import com.backend.finddirections.entity.pharmacy.repository.PharmacyRepository
+import com.backend.finddirections.pharmacy.entity.Pharmacy
+import com.backend.finddirections.pharmacy.repository.PharmacyRepository
 import org.springframework.beans.factory.annotation.Autowired
 
 import java.time.LocalDateTime
