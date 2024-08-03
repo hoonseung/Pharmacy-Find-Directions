@@ -5,6 +5,10 @@ import lombok.Builder;
 
 @Builder
 public record Document(
+
+        @JsonProperty("place_name")
+        String placeName,
+
         @JsonProperty("address_name")
         String addressName,
 
@@ -12,7 +16,10 @@ public record Document(
         double latitude,
 
         @JsonProperty("x")
-        double longitude
+        double longitude,
+
+        @JsonProperty("distance")
+        double distance
 
 ) {
 }

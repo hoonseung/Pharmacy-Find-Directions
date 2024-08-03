@@ -2,11 +2,14 @@ package com.backend.finddirections.direction.service;
 
 
 import com.backend.finddirections.api.dto.Document;
+import com.backend.finddirections.api.service.KakaoCategorySearchAddress;
 import com.backend.finddirections.direction.entity.Direction;
+import com.backend.finddirections.direction.repository.DirectionRepository;
 import com.backend.finddirections.pharmacy.service.PharmacySearchService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -22,28 +25,59 @@ public class DirectionService {
     private static final double RADIUS_KM = 10.0;
 
     private final PharmacySearchService pharmacySearchService;
+    private final DirectionRepository directionRepository;
+    private final KakaoCategorySearchAddress kakaoCategorySearchAddress;
+
+    @Transactional
+    public List<Direction> saveDirectionAll(List<Direction> directions) {
+        if (CollectionUtils.isEmpty(directions)) return Collections.emptyList();
+        return directionRepository.saveAll(directions);
+    }
 
 
-    public List<Direction> buildDirectionList(Document document) {
-        if (Objects.isNull(document)) {
+    public List<Direction> buildDirectionList(Document inputDocument) {
+        if (Objects.isNull(inputDocument)) {
             return Collections.emptyList();
         }
 
         return pharmacySearchService.searchPharmacyResList()
                 .stream()
                 .map(pharmacy -> Direction.builder()
-                        .inputAddress(document.addressName())
-                        .inputLatitude(document.latitude())
-                        .inputLongitude(document.longitude())
+                        .inputAddress(inputDocument.addressName())
+                        .inputLatitude(inputDocument.latitude())
+                        .inputLongitude(inputDocument.longitude())
                         .targetPharmacyName(pharmacy.pharmacyName())
                         .targetAddress(pharmacy.pharmacyAddress())
                         .targetLatitude(pharmacy.latitude())
                         .targetLongitude(pharmacy.longitude())
-                        .distance(calculateDistance(document.latitude(), document.longitude(),
+                        .distance(calculateDistance(inputDocument.latitude(), inputDocument.longitude(),
                                 pharmacy.latitude(), pharmacy.longitude()))
                         .build())
                 .filter(pharmacy -> pharmacy.getDistance() <= RADIUS_KM)
                 .sorted(Comparator.comparing(Direction::getDistance))
+                .limit(MAX_SEARCH_COUNT)
+                .toList();
+    }
+
+
+    public List<Direction> buildDirectionListByCategoryApi(Document inputDocument) {
+        if (Objects.isNull(inputDocument)) {
+            return Collections.emptyList();
+        }
+
+        return kakaoCategorySearchAddress.requestCategorySearch(inputDocument.latitude(), inputDocument.longitude(), RADIUS_KM)
+                .getDocuments()
+                .stream()
+                .map(documentDto -> Direction.builder()
+                        .inputAddress(inputDocument.addressName())
+                        .inputLatitude(inputDocument.latitude())
+                        .inputLongitude(inputDocument.longitude())
+                        .targetPharmacyName(documentDto.placeName())
+                        .targetAddress(documentDto.addressName())
+                        .targetLatitude(documentDto.latitude())
+                        .targetLongitude(documentDto.longitude())
+                        .distance(documentDto.distance() * 0.001)
+                        .build())
                 .limit(MAX_SEARCH_COUNT)
                 .toList();
     }

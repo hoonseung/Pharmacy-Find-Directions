@@ -10,12 +10,28 @@ import java.net.URI;
 @Service
 public class KakaoUriBuildService {
 
-    private static final String REQUEST_API_URI = "https://dapi.kakao.com/v2/local/search/address.json";
+    private static final String KAKAO_ADDRESS_SEARCH_URI = "https://dapi.kakao.com/v2/local/search/address.json";
+    private static final String KAKAO_CATEGORY_SEARCH_URI = " https://dapi.kakao.com/v2/local/search/category.json";
 
 
-    public URI uriBuild(String address) {
-        return UriComponentsBuilder.fromUriString(REQUEST_API_URI)
+    public URI kakaoAddressUriBuild(String address) {
+        return UriComponentsBuilder.fromUriString(KAKAO_ADDRESS_SEARCH_URI)
                 .queryParam("query", address)
+                .build()
+                .toUri();
+    }
+
+
+    public URI kakaoCategoryUriBuild(String category, double latitude, double longitude, double radius) {
+
+        double covertToMeterRadius = radius * 1000;
+
+        return UriComponentsBuilder.fromUriString(KAKAO_CATEGORY_SEARCH_URI)
+                .queryParam("category_group_code", category)
+                .queryParam("x", longitude)
+                .queryParam("y", latitude)
+                .queryParam("radius", covertToMeterRadius)
+                .queryParam("sort", "distance")
                 .build()
                 .toUri();
     }

@@ -12,21 +12,21 @@ import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Recover;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
 import org.springframework.web.client.RestClient;
 
 import java.net.URI;
-import java.util.Objects;
 
 @Slf4j
 @RequiredArgsConstructor
 @Service
-public class KakaoAddressSearchService {
+public class KakaoCategorySearchAddress {
 
     private final RestClient restClient;
     @Value("${kakao.rest.api.key}")
     private String kakaoKey;
     private final KakaoUriBuildService kakaoUriBuildService;
+
+    private static final String CATEGORY_CODE = "PM9";
 
 
     @Retryable(
@@ -34,11 +34,9 @@ public class KakaoAddressSearchService {
             maxAttempts = 2,
             backoff = @Backoff(2000L)
     )
-    public KakaoApiResponse requestAddressSearch(String address) {
-        if (ObjectUtils.isEmpty(address)){
-            return null;
-        }
-        URI uri = kakaoUriBuildService.kakaoAddressUriBuild(address);
+    public KakaoApiResponse requestCategorySearch(double latitude, double longitude, double radius) {
+
+        URI uri = kakaoUriBuildService.kakaoCategoryUriBuild(CATEGORY_CODE, latitude, longitude, radius);
 
         return restClient.get()
                 .uri(uri)
@@ -58,5 +56,7 @@ public class KakaoAddressSearchService {
         log.error("All the retries failed. address: {}, error: {}", address, e.getMessage());
         return null;
     }
+
+
 
 }

@@ -1,7 +1,6 @@
 package com.backend.finddirections.kakaoapi
 
 
-import com.backend.finddirections.api.exception.KakaoClientApiException
 import com.backend.finddirections.api.service.KakaoAddressSearchService
 import com.backend.finddirections.pharmacy.AbstractIntegrationContainerBaseTest
 import org.springframework.beans.factory.annotation.Autowired
@@ -21,8 +20,7 @@ class KakaoAddressSearchServiceTest extends AbstractIntegrationContainerBaseTest
         def result = kakaoAddressSearchService.requestAddressSearch(address)
 
         then:
-        def ex = thrown(KakaoClientApiException)
-        println ex.getHttpStatusCode()
+        result == null
     }
 
 
@@ -34,14 +32,33 @@ class KakaoAddressSearchServiceTest extends AbstractIntegrationContainerBaseTest
         def result = kakaoAddressSearchService.requestAddressSearch(address)
 
         then:
-        result.meta() != null
-        result.meta().totalCount() > 0
-        result.documents().size() > 0
-        result.documents().get(0) != null
+        result.getMeta() != null
+        result.getMeta().totalCount() > 0
+        result.getDocuments().size() > 0
+        result.getDocuments().get(0) != null
     }
 
 
+    def "정상적인 주소를 입력 했을 경우, 정상적으로 위도 경도가 반환된다"() {
+        given:
+        boolean actualResult = false
 
+        when:
+        def result = kakaoAddressSearchService.requestAddressSearch(inputAddress)
+
+        then:
+        if (result == null) actualResult = false
+        else actualResult = result.getDocuments().size() > 0
+
+
+        where:
+        inputAddress        | expectedResult
+        "전북 삼성동 100"        | true
+        "서울 성북구 종암동 91"     | true
+        "서울 대학로"            | true
+        "서울 성북구 종암동 잘못된 주소" | false
+
+    }
 
 
 }
