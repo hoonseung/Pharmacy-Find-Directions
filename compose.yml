@@ -1,5 +1,23 @@
 services:
 
+  find-directions:
+    container_name: find-directions
+    image: find-directions
+    depends_on:
+      - john-mariadb
+      - john-redis
+    ports:
+      - 80:8080
+    environment:
+      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
+      - SPRING_DATASOURCE_URL=${SPRING_DATASOURCE_URL}
+      - SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME}
+      - SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
+      - SPRING_DATA_REDIS_HOST=${SPRING_DATA_REDIS_HOST}
+      - KAKAO_REST_API_KEY=${KAKAO_REST_API_KEY}
+
+    restart: always
+
 
   john-redis:
     container_name: john-redis
