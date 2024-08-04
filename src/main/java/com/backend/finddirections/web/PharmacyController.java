@@ -1,36 +1,32 @@
-package com.backend.finddirections.pharmacy.service;
-
+package com.backend.finddirections.web;
 
 import com.backend.finddirections.pharmacy.cache.PharmacyRedisTemplateService;
 import com.backend.finddirections.pharmacy.entity.dto.PharmacyRes;
 import com.backend.finddirections.pharmacy.repository.PharmacyRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@Transactional(readOnly = true)
 @RequiredArgsConstructor
-@Service
-public class PharmacySearchService {
-
+@RestController
+public class PharmacyController {
 
     private final PharmacyRepository pharmacyRepository;
     private final PharmacyRedisTemplateService pharmacyRedisTemplateService;
 
 
-    public List<PharmacyRes> searchPharmacyResList() {
-
-        List<PharmacyRes> fromRedis = pharmacyRedisTemplateService.findAll();
-        if (!fromRedis.isEmpty()) {
-            return fromRedis;
-        }
-
-        return pharmacyRepository.findAll()
+    // 데이터 초기 셋팅을 위한 임시 메서드
+    @GetMapping("/redis/save")
+    public String save() {
+        List<PharmacyRes> pharmacyResList = pharmacyRepository.findAll()
                 .stream()
                 .map(PharmacyRes::toDto)
                 .toList();
+
+        pharmacyResList.forEach(pharmacyRedisTemplateService::save);
+
+        return "save success";
     }
 }
-
