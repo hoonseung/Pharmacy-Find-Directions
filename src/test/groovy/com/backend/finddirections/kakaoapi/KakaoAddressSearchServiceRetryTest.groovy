@@ -65,7 +65,7 @@ class KakaoAddressSearchServiceRetryTest extends AbstractIntegrationContainerBas
         println result
 
         then:
-        2 * kakaoUriBuildService.uriBuild(inputAddress) >> uri // 2번 호출 확인
+        2 * kakaoUriBuildService.kakaoAddressUriBuild(inputAddress) >> uri // 2번 호출 확인
         result.getDocuments().size() == 1
         result.getMeta().totalCount() == 1
         result.getDocuments().getFirst().addressName() == inputAddress
@@ -83,7 +83,7 @@ class KakaoAddressSearchServiceRetryTest extends AbstractIntegrationContainerBas
         def result = kakaoAddressSearchService.requestAddressSearch(inputAddress)
 
         then:
-        2 * kakaoUriBuildService.uriBuild(inputAddress) >> uri
+        2 * kakaoUriBuildService.kakaoAddressUriBuild(inputAddress) >> uri
         result == null
     }
 }

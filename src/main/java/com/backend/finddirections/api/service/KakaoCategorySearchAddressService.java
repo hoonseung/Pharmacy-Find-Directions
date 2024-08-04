@@ -8,9 +8,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
-import org.springframework.retry.annotation.Backoff;
-import org.springframework.retry.annotation.Recover;
-import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
@@ -19,7 +16,7 @@ import java.net.URI;
 @Slf4j
 @RequiredArgsConstructor
 @Service
-public class KakaoCategorySearchAddress {
+public class KakaoCategorySearchAddressService {
 
     private final RestClient restClient;
     @Value("${kakao.rest.api.key}")

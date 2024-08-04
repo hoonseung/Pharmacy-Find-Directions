@@ -2,7 +2,7 @@ package com.backend.finddirections.direction.service;
 
 
 import com.backend.finddirections.api.dto.Document;
-import com.backend.finddirections.api.service.KakaoCategorySearchAddress;
+import com.backend.finddirections.api.service.KakaoCategorySearchAddressService;
 import com.backend.finddirections.direction.entity.Direction;
 import com.backend.finddirections.direction.repository.DirectionRepository;
 import com.backend.finddirections.pharmacy.service.PharmacySearchService;
@@ -30,7 +30,7 @@ public class DirectionService {
 
     private final PharmacySearchService pharmacySearchService;
     private final DirectionRepository directionRepository;
-    private final KakaoCategorySearchAddress kakaoCategorySearchAddress;
+    private final KakaoCategorySearchAddressService kakaoCategorySearchAddressService;
     private final Base62Service base62Service;
 
     @Transactional
@@ -89,7 +89,7 @@ public class DirectionService {
             return Collections.emptyList();
         }
 
-        List<Direction> list = kakaoCategorySearchAddress.requestCategorySearch(inputDocument.latitude(), inputDocument.longitude(), RADIUS_KM)
+        List<Direction> list = kakaoCategorySearchAddressService.requestCategorySearch(inputDocument.latitude(), inputDocument.longitude(), RADIUS_KM)
                 .getDocuments()
                 .stream()
                 .map(documentDto -> Direction.builder()

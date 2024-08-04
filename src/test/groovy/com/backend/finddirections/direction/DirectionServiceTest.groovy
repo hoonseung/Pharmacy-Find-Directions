@@ -1,6 +1,9 @@
 package com.backend.finddirections.direction
 
 import com.backend.finddirections.api.dto.Document
+import com.backend.finddirections.api.service.KakaoCategorySearchAddressService
+import com.backend.finddirections.direction.repository.DirectionRepository
+import com.backend.finddirections.direction.service.Base62Service
 import com.backend.finddirections.direction.service.DirectionService
 import com.backend.finddirections.pharmacy.entity.dto.PharmacyRes
 import com.backend.finddirections.pharmacy.service.PharmacySearchService
@@ -10,10 +13,14 @@ import java.time.LocalDateTime
 
 class DirectionServiceTest extends Specification {
 
+    private DirectionRepository directionRepository = Mock()
+    private KakaoCategorySearchAddressService kakaoCategorySearchAddressService = Mock()
+    private Base62Service base62Service = Mock()
 
     private PharmacySearchService pharmacySearchService = Mock()
 
-    private DirectionService directionService = new DirectionService(pharmacySearchService)
+    private DirectionService directionService = new DirectionService(pharmacySearchService, directionRepository,
+            kakaoCategorySearchAddressService, base62Service)
 
     private List<PharmacyRes> pharmacyResList
 
