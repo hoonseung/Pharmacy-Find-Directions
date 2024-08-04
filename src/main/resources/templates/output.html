@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="kor">
+<head>
+    <meta charset="UTF-8">
+    <title>Pharmacy Recommendation System</title>
+    <!--부트스트랩 css 추가-->
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+</head>
+<body>
+
+<div>
+    <h2 class="h2-title">Pharmacy Recommendation Results</h2>
+</div>
+
+<table class="table table-hover">
+    <tr>
+        <th>약국명</th>
+        <th>약국 주소</th>
+        <th>거리</th>
+        <th>길안내 링크</th>
+        <th>로드뷰 링크</th>
+    </tr>
+
+    <tr th:each="output : ${outputs}">
+        <td th:text="${output.pharmacyName()}"></td>
+        <td th:text="${output.pharmacyAddress()}"></td>
+        <td th:text="${output.distance()}"></td>
+        <td>
+            <a th:href="@{https://map.kakao.com/link/map/{direction}(direction=${output.directionUrlPathVariable()})}">지도 바로가기</a>
+        </td>
+        <td>
+            <a th:href="@{https://map.kakao.com/link/roadview/{roadView}(roadView=${output.roadViewUrlPathVariable()})}">로드뷰 바로가기</a>
+        </td>
+    </tr>
+
+</table>
+
+<!--부트스트랩 js, jquery 추가-->
+<script th:src="@{/js/jquery.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+</body>
+</html>

@@ -7,6 +7,7 @@ import com.backend.finddirections.direction.entity.Direction;
 import com.backend.finddirections.direction.repository.DirectionRepository;
 import com.backend.finddirections.pharmacy.service.PharmacySearchService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -16,6 +17,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
+@Slf4j
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 @Service
@@ -60,12 +62,12 @@ public class DirectionService {
     }
 
 
-    public List<Direction> buildDirectionListByCategoryApi(Document inputDocument) {
+    public List<Direction>  buildDirectionListByCategoryApi(Document inputDocument) {
         if (Objects.isNull(inputDocument)) {
             return Collections.emptyList();
         }
 
-        return kakaoCategorySearchAddress.requestCategorySearch(inputDocument.latitude(), inputDocument.longitude(), RADIUS_KM)
+        List<Direction> list = kakaoCategorySearchAddress.requestCategorySearch(inputDocument.latitude(), inputDocument.longitude(), RADIUS_KM)
                 .getDocuments()
                 .stream()
                 .map(documentDto -> Direction.builder()
@@ -80,6 +82,8 @@ public class DirectionService {
                         .build())
                 .limit(MAX_SEARCH_COUNT)
                 .toList();
+        log.info("list : {}", list);
+        return list;
     }
 
 

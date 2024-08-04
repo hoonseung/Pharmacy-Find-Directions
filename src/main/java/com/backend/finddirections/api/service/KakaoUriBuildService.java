@@ -5,18 +5,20 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 
 
 @Service
 public class KakaoUriBuildService {
 
     private static final String KAKAO_ADDRESS_SEARCH_URI = "https://dapi.kakao.com/v2/local/search/address.json";
-    private static final String KAKAO_CATEGORY_SEARCH_URI = " https://dapi.kakao.com/v2/local/search/category.json";
+    private static final String KAKAO_CATEGORY_SEARCH_URI = "https://dapi.kakao.com/v2/local/search/category.json";
 
 
     public URI kakaoAddressUriBuild(String address) {
         return UriComponentsBuilder.fromUriString(KAKAO_ADDRESS_SEARCH_URI)
                 .queryParam("query", address)
+                .encode(StandardCharsets.UTF_8)
                 .build()
                 .toUri();
     }
@@ -32,6 +34,7 @@ public class KakaoUriBuildService {
                 .queryParam("y", latitude)
                 .queryParam("radius", covertToMeterRadius)
                 .queryParam("sort", "distance")
+                .encode(StandardCharsets.UTF_8)
                 .build()
                 .toUri();
     }

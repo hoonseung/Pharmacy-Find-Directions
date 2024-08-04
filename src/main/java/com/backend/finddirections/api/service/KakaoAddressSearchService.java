@@ -16,7 +16,6 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.client.RestClient;
 
 import java.net.URI;
-import java.util.Objects;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -35,7 +34,7 @@ public class KakaoAddressSearchService {
             backoff = @Backoff(2000L)
     )
     public KakaoApiResponse requestAddressSearch(String address) {
-        if (ObjectUtils.isEmpty(address)){
+        if (ObjectUtils.isEmpty(address)) {
             return null;
         }
         URI uri = kakaoUriBuildService.kakaoAddressUriBuild(address);

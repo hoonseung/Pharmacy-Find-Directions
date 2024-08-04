@@ -29,14 +29,15 @@ public class KakaoCategorySearchAddress {
     private static final String CATEGORY_CODE = "PM9";
 
 
-    @Retryable(
-            retryFor = {RuntimeException.class},
-            maxAttempts = 2,
-            backoff = @Backoff(2000L)
-    )
+//    @Retryable(
+//            retryFor = {RuntimeException.class},
+//            maxAttempts = 2,
+//            backoff = @Backoff(2000L)
+//    )
     public KakaoApiResponse requestCategorySearch(double latitude, double longitude, double radius) {
 
         URI uri = kakaoUriBuildService.kakaoCategoryUriBuild(CATEGORY_CODE, latitude, longitude, radius);
+
 
         return restClient.get()
                 .uri(uri)
@@ -51,12 +52,11 @@ public class KakaoCategorySearchAddress {
     }
 
 
-    @Recover
-    public KakaoApiResponse recover(RuntimeException e, String address) {
-        log.error("All the retries failed. address: {}, error: {}", address, e.getMessage());
-        return null;
-    }
-
+//    @Recover
+//    public KakaoApiResponse recover(RuntimeException e, String address) {
+//        log.error("All the retries failed. address: {}, error: {}", address, e.getMessage());
+//        return null;
+//    }
 
 
 }
