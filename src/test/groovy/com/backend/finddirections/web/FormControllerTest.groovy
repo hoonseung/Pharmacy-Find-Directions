@@ -59,10 +59,5 @@ class FormControllerTest extends Specification {
 
         resultActions
                 .andExpect(status() isOk())
-//                .andExpect(view().name("output"))
-//                .andExpect(model().attributeExists("outputs"))
-//                .andExpect(model().attribute("outputs", outputs))
-//                .andDo(print())
-
     }
 }
