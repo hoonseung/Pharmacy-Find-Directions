@@ -29,11 +29,19 @@ public class DirectionService {
     private final PharmacySearchService pharmacySearchService;
     private final DirectionRepository directionRepository;
     private final KakaoCategorySearchAddress kakaoCategorySearchAddress;
+    private final Base62Service base62Service;
 
     @Transactional
     public List<Direction> saveDirectionAll(List<Direction> directions) {
         if (CollectionUtils.isEmpty(directions)) return Collections.emptyList();
         return directionRepository.saveAll(directions);
+    }
+
+
+    public Direction findById(String encodedId) {
+        Long directionId = base62Service.decodeDirectionId(encodedId);
+        return directionRepository.findById(directionId)
+                .orElseThrow(() -> new RuntimeException("direction 을 찾을 수 없습니다"));
     }
 
 
@@ -62,7 +70,7 @@ public class DirectionService {
     }
 
 
-    public List<Direction>  buildDirectionListByCategoryApi(Document inputDocument) {
+    public List<Direction> buildDirectionListByCategoryApi(Document inputDocument) {
         if (Objects.isNull(inputDocument)) {
             return Collections.emptyList();
         }

@@ -26,7 +26,7 @@
         <td th:text="${output.pharmacyAddress()}"></td>
         <td th:text="${output.distance()}"></td>
         <td>
-            <a th:href="@{https://map.kakao.com/link/map/{direction}(direction=${output.directionUrlPathVariable()})}">지도 바로가기</a>
+            <a th:href="@{/dir/{encodedId}(encodedId=${output.directionUrlPathVariable()})}">지도 바로가기</a>
         </td>
         <td>
             <a th:href="@{https://map.kakao.com/link/roadview/{roadView}(roadView=${output.roadViewUrlPathVariable()})}">로드뷰 바로가기</a>
